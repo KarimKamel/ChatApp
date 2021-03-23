@@ -1,0 +1,74 @@
+<%-include("partials/header",{title:"index",cssLink:"stylesheets/index.css"})%>
+
+
+<body>
+  <div class="container justify-content-center text-center p-5 my-5">
+    <div class="card m-auto" style="width: 18rem;">
+      <i class="fas fa-user fa-5x p-3"></i>
+      <img id="profileImage" src="#" height=100 width=100>
+      <div class="edit-div"><span class="edit-img-text">upload an image</span><i onclick="clickHiddenInput()"
+          class="fas fa-edit edit-icon"></i>
+      </div>
+      <div class="card-body">
+
+        <h5 class="card-title">Enter a nickname</h5>
+        
+        
+
+          <input id="nicknameInput" type="text" class="form-control text-center mb-2" placeholder="ex:Dave99"
+            aria-label="Recipient's username" aria-describedby="basic-addon2" name="nickname"
+            onkeyup="updateButtonStatus()">
+            
+          <input onchange="uploadCustomAvatar(event)" accept="image/*" name="file" type="file" id="imageFile"
+            style="display: none;" />
+             
+         
+        
+        <button id="submitButton" type="input" class="w-100 btn btn-lg btn-primary" type="submit" onclick="submitForm(event)"  disabled>Go to chat</button>
+        
+        
+        
+      </div>
+    </div>
+    <p class="index-message">
+      <% if(typeof(message)!== "undefined"){ %>
+      <%=message%>
+      <%}%>
+    </p>
+    <h5 id = "welcomeMessage">Welcome to EasyChat insert your nickname and start chatting away!</h5>
+  </div>    
+  <!-- <script>
+    const url = "https://api.cloudinary.com/v1_1/dtwtrdg4s/image/upload";
+const form = document.querySelector("form");
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const files = document.querySelector("[type=file]#imageFile").files;
+  const formData = new FormData();
+
+  for (let i = 0; i < files.length; i++) {
+    let file = files[i];
+    formData.append("file", file);
+    formData.append("upload_preset", "zsm6cuam");
+
+    fetch(url, {
+      method: "POST",
+      body: formData
+    })
+      .then((response) => {
+        console.log(response);
+        
+        return response.text();
+      })
+      .then((data) => {
+        console.log(data);
+        window.location.replace("/");
+        
+      });
+  }
+});
+  </script> -->
+</body>
+
+</html>
