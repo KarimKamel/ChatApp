@@ -1,6 +1,19 @@
 <%-include("partials/header",{title:"index",cssLink:"stylesheets/index.css"})%>
+<!-- <% if(typeof(sessionInChat)!== "undefined") { %>
+     
+     <script>
+  var localSessionInChat = <%=sessionInChat%>
+  console.log(localSessionInChat);
+</script>
+<% } %> -->
 
+     
+<script>
+  var localSessionInChat = <%=sessionInChat%>
+  console.log(localSessionInChat);
+</script> 
 
+ 
 <body>
   <div class="container justify-content-center text-center p-5 my-5">
     <div class="card m-auto" style="width: 18rem;">
@@ -18,6 +31,7 @@
           <input id="nicknameInput" type="text" class="form-control text-center mb-2" placeholder="ex:Dave99"
             aria-label="Recipient's username" aria-describedby="basic-addon2" name="nickname"
             onkeyup="updateButtonStatus()">
+
             
           <input onchange="uploadCustomAvatar(event)" accept="image/*" name="file" type="file" id="imageFile"
             style="display: none;" />
@@ -35,6 +49,12 @@
       <%=message%>
       <%}%>
     </p>
+    <p class="index-message">
+      <% if(sessionInChat){ %>
+      <%=sessionErrorMessage%>
+      <%}%>
+    </p>
+    
     <h5 id = "welcomeMessage">Welcome to EasyChat insert your nickname and start chatting away!</h5>
   </div>    
   <!-- <script>

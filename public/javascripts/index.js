@@ -1,9 +1,33 @@
+var buttonSemaphore;
 function updateButtonStatus() {
-	const inputText = $('#nicknameInput').val();
-	if (!inputText) {
-		$('#submitButton').attr('disabled', true);
+	if (buttonSemaphore) {
+		const inputText = $('#nicknameInput').val();
+		if (!inputText) {
+			$('#submitButton').attr('disabled', true);
+		} else {
+			$('#submitButton').attr('disabled', false);
+		}
+	}
+}
+// async function isSessionInChat() {
+// 	const response = await fetch('/checkSession');
+
+// 	const data = await response.json();
+
+// 	if (data.sessionInChat) {
+// 		buttonSemaphore = false;
+// 	} else {
+// 		buttonSemaphore = true;
+// 		$('.session-message').hide();
+// 	}
+// }
+async function isSessionInChat() {
+	debugger;
+	if (localSessionInChat) {
+		buttonSemaphore = false;
 	} else {
-		$('#submitButton').attr('disabled', false);
+		buttonSemaphore = true;
+		$('.session-message').hide();
 	}
 }
 
@@ -80,6 +104,7 @@ function submitForm(event) {
 }
 
 $('document').ready(() => {
+	isSessionInChat();
 	$('#profileImage').hide();
 	updateButtonStatus();
 });

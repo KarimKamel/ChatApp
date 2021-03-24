@@ -4,6 +4,7 @@ var router = express.Router();
 const multer = require('multer');
 
 const userTakeErrorMessage = 'name already in use, try a different name...';
+const sessionInChatError = 'you have already joined the chat with this client';
 const nicknameAndIdList = [];
 
 const storage = multer.diskStorage({
@@ -16,61 +17,79 @@ const storage = multer.diskStorage({
 });
 
 function nicknameIsAvailable(nickname) {
-	const nameList = nicknameAndIdList.map(function (value) {
-		return value.nickname;
-	});
-	return !nameList.includes(nickname);
+	const nameTaken = nicknameAndIdList.some(
+		(value) => value.nickname === nickname,
+	);
+	return !nameTaken;
+}
+function sessionIsInChat(sessionID) {
+	const sessionInChat = nicknameAndIdList.some(
+		(value) => value.sessionID === sessionID,
+	);
+	return sessionInChat;
+}
+function assignDefaultImage(imageURL) {
+	imageURL =
+		'https://res.cloudinary.com/dtwtrdg4s/image/upload/v1616154021/chat/Screenshot_2021-02-25_131600_dyzqzp.png';
+	return imageURL;
+}
+function getSessionID(cookie) {
+	let regExp = new RegExp('sessionID=([^;]*)(;|$)');
+	let sessionID = cookie.match(regExp);
+	return sessionID[1];
 }
 
-// function fileFilter(req, file, cb) {
-// 	const nickname = req.body.nickname;
-
-// 	if (!nicknameIsAvailable(nickname)) {
-// 		return cb(new Error('nickname is already taken'), false);
-// 	} else if (
-// 		file.mimetype == 'image/png' ||
-// 		file.mimetype == 'image/jpg' ||
-// 		file.mimetype == 'image/jpeg'
-// 	) {
-// 		return cb(null, true);
-// 	} else {
-// 		// cb(null, false);
-// 		return cb(new Error('Only .png, .jpg and .jpeg format allowed!'), false);
-// 	}
-// }
-
-// var upload = multer({
-// 	fileFilter: fileFilter,
-// 	storage: storage,
-// });
+function getUserObject(sessionID) {
+	const userObject = nicknameAndIdList.find(
+		(userObject) => userObject.sessionID === sessionID,
+	);
+	return userObject;
+}
 
 router.get('/', function (req, res, next) {
-	res.render('index', { title: 'Express' });
+	const sessionID = getSessionID(req.headers.cookie);
+	sessionInChat = sessionIsInChat(sessionID);
+	res.render('index', {
+		title: 'Express',
+		sessionInChat: sessionInChat,
+		sessionErrorMessage: sessionInChatError,
+	});
+});
+
+router.get('/checkSession', function (req, res, next) {
+	const sessionID = getSessionID(req.headers.cookie);
+	sessionInChat = sessionIsInChat(sessionID);
+	res.json({ sessionInChat: sessionInChat });
 });
 
 router.post('/', function (req, res) {
 	var { nickname, imageURL } = req.body;
 
-	if (nicknameIsAvailable(nickname)) {
-		// if (res.req.file) {
-		//   filename = res.req.file.filename;
-		// }
+	if (!imageURL || imageURL === 'undefined') {
+		imageURL = assignDefaultImage(imageURL);
+	}
+	const sessionID = getSessionID(req.headers.cookie);
 
-		if (!imageURL || imageURL === 'undefined') {
-			imageURL =
-				'https://res.cloudinary.com/dtwtrdg4s/image/upload/v1616154021/chat/Screenshot_2021-02-25_131600_dyzqzp.png';
+	if (!sessionIsInChat(sessionID)) {
+		if (nicknameIsAvailable(nickname)) {
+			let user = {
+				nickname: nickname,
+				id: '',
+				image: imageURL,
+				sessionID: sessionID,
+			};
+			nicknameAndIdList.push(user);
+			res.cookie('nickname', nickname, { signed: false });
+			res.render('chat', { nickname: nickname });
+		} else {
+			console.log('rejecting user ' + nickname + ' is already taken');
+			res.render('index', { message: userTakeErrorMessage });
 		}
-		let user = {
-			nickname: nickname,
-			id: '',
-			image: imageURL,
-		};
-		nicknameAndIdList.push(user);
+	} else {
+		const userObject = getUserObject(sessionID);
+		nicknameAndIdList.push(userObject);
 		res.cookie('nickname', nickname, { signed: false });
 		res.render('chat', { nickname: nickname });
-	} else {
-		console.log('rejecting user ' + nickname + ' is already taken');
-		res.render('index', { message: userTakeErrorMessage });
 	}
 });
 

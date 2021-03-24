@@ -9,7 +9,10 @@ const debug = require('../util/chatUtils').createDebug('chatapp:main');
 function mainChat(io) {
 	function getUserObject(socket) {
 		if (socket.request.headers.cookie) {
-			const nickname = socket.request.headers.cookie.substring(9);
+			let regExp = new RegExp('nickname=([^;]*)(;|$)');
+			const match = socket.request.headers.cookie.match(regExp);
+			const nickname = match[1];
+
 			const userObject = nicknameAndIdList.find(
 				(element) => element.nickname === nickname,
 			);

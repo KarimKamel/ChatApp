@@ -1,63 +1,63 @@
 .chat-window,
 .user-window {
-  height: 70vh;
-  margin-bottom: 5vh;
-  border-radius: 5%;
-  background-color: white;
+	height: 70vh;
+	margin-bottom: 5vh;
+	border-radius: 5%;
+	background-color: white;
 }
 .input-window {
-  resize: none;
+	resize: none;
 }
 #welcomeMessage {
-  color: #357bb8;
-  border: 2px solid;
-  padding: 1rem;
-  border-radius: 2rem;
-  max-width: 400px;
-  min-width: 290px;
-  margin: auto;
+	color: #357bb8;
+	border: 2px solid;
+	padding: 1rem;
+	border-radius: 2rem;
+	max-width: 400px;
+	min-width: 290px;
+	margin: auto;
 }
 .edit-div {
-  padding-left: 3rem;
+	padding-left: 3rem;
 }
 .edit-img-text {
-  font-size: 0.8rem;
-  display: inline-block;
-  width: fit-content;
-  margin-right: 4rem;
+	font-size: 0.8rem;
+	display: inline-block;
+	width: fit-content;
+	margin-right: 4rem;
 }
 .edit-icon {
-  /* float: right; */
-  position: absolute;
-  right: 35%;
-  top: 35%;
-  display: inline-block;
-  width: 2rem;
-  margin-top: 0.3rem;
-  /* margin-left: 2rem; */
-  padding-left: 2rem;
+	/* float: right; */
+	position: absolute;
+	right: 35%;
+	top: 35%;
+	display: inline-block;
+	width: 2rem;
+	margin-top: 0.3rem;
+	/* margin-left: 2rem; */
+	padding-left: 2rem;
 }
 .fa-user {
-  border: 2px solid #357bb8;
-  border-radius: 100%;
-  width: 8rem;
+	border: 2px solid #357bb8;
+	border-radius: 100%;
+	width: 8rem;
 }
 
 .card {
-  padding-top: 1rem;
-  border: 2px solid #357bb8;
-  color: #357bb8;
-  border-radius: 1rem;
-  align-items: center;
+	padding-top: 1rem;
+	border: 2px solid #357bb8;
+	color: #357bb8;
+	border-radius: 1rem;
+	align-items: center;
 }
 
 #profileImage {
-  height: 100px;
-  width: 100px;
-  border-radius: 50%;
+	height: 100px;
+	width: 100px;
+	border-radius: 50%;
 }
 
 .index-message {
-  color: red;
-  font-weight: 700;
+	color: red;
+	font-weight: 700;
 }
