@@ -3,18 +3,9 @@ const path = require('path');
 var router = express.Router();
 const multer = require('multer');
 
-const userTakeErrorMessage = 'name already in use, try a different name...';
+const userTakenErrorMessage = 'name already in use, try a different name...';
 const sessionInChatError = 'you have already joined the chat with this client';
 const nicknameAndIdList = [];
-
-const storage = multer.diskStorage({
-	destination: function (req, file, callback) {
-		callback(null, './public/images');
-	},
-	filename: function (req, file, callback) {
-		callback(null, req.body.nickname + path.extname(file.originalname));
-	},
-});
 
 function nicknameIsAvailable(nickname) {
 	const nameTaken = nicknameAndIdList.some(
@@ -30,7 +21,7 @@ function sessionIsInChat(sessionID) {
 }
 function assignDefaultImage(imageURL) {
 	imageURL =
-		'https://res.cloudinary.com/dtwtrdg4s/image/upload/v1616154021/chat/Screenshot_2021-02-25_131600_dyzqzp.png';
+		'https://res.cloudinary.com/dtwtrdg4s/image/upload/v1616655913/chat/user-solid_y1igba.png';
 	return imageURL;
 }
 function getSessionID(cookie) {
@@ -50,16 +41,10 @@ router.get('/', function (req, res, next) {
 	const sessionID = getSessionID(req.headers.cookie);
 	sessionInChat = sessionIsInChat(sessionID);
 	res.render('index', {
-		title: 'Express',
+		title: 'Easy Chat',
 		sessionInChat: sessionInChat,
 		sessionErrorMessage: sessionInChatError,
 	});
-});
-
-router.get('/checkSession', function (req, res, next) {
-	const sessionID = getSessionID(req.headers.cookie);
-	sessionInChat = sessionIsInChat(sessionID);
-	res.json({ sessionInChat: sessionInChat });
 });
 
 router.post('/', function (req, res) {
@@ -83,7 +68,7 @@ router.post('/', function (req, res) {
 			res.render('chat', { nickname: nickname });
 		} else {
 			console.log('rejecting user ' + nickname + ' is already taken');
-			res.render('index', { message: userTakeErrorMessage });
+			res.render('index', { message: userTakenErrorMessage });
 		}
 	} else {
 		const userObject = getUserObject(sessionID);

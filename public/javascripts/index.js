@@ -22,7 +22,6 @@ function updateButtonStatus() {
 // 	}
 // }
 async function isSessionInChat() {
-	debugger;
 	if (localSessionInChat) {
 		buttonSemaphore = false;
 	} else {
@@ -49,6 +48,8 @@ function uploadCustomAvatar(event) {
 			formData.append('file', file);
 			formData.append('upload_preset', 'zsm6cuam');
 
+			$('.spinner-container').show();
+			$('.container').addClass('faded');
 			fetch(url, {
 				method: 'POST',
 				body: formData,
@@ -67,6 +68,8 @@ function uploadCustomAvatar(event) {
 					console.log(customImage);
 					customImage.show();
 					defaultImage.hide();
+					$('.spinner-container').hide();
+					$('.container').removeClass('faded');
 				});
 		}
 	}
@@ -104,30 +107,13 @@ function submitForm(event) {
 }
 
 $('document').ready(() => {
+	// const spinner = document.querySelector('.spinner-container');
+
+	// spinner.style.display = 'block';
+
+	// debugger;
+
 	isSessionInChat();
 	$('#profileImage').hide();
 	updateButtonStatus();
-});
-$(window).on('popstate', function (event, state) {
-	// Here comes the code to execute when the back button is pressed
-	event.preventDefault();
-	console.log('Popstate');
-	document.cookie = 'nickname= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
-});
-// window.onbeforeunload = function (event) {
-// 	debugger;
-// 	console.log('refreshing');
-// 	alert('refresh');
-// 	return confirm('Confirm refresh');
-// };
-jQuery(document).ready(function ($) {
-	console.log('ready1');
-	if (window.history && window.history.pushState) {
-		console.log('ready2');
-		$(window).on('popstate', function () {
-			console.log('ready3');
-			//when back is clicked popstate event executes
-			//code here will execute on back click
-		});
-	}
 });

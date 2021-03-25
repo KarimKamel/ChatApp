@@ -5,11 +5,18 @@ $(document).ready(function () {
 	// checkNickName();
 	updateInputButtonStatus();
 });
+
+// function triggered by chat message input onchange
+//enables send button when chat input contains a message (i.e: disables sending empty messages)
+//in case this function is triggered by the enter key and message input is not empty. the message input value is sent as a message (i.e sends message when enter is pressed)
 function updateInputButtonStatus(event) {
 	if ($('#inputWindow').val()) {
+		//code 13 = enter key
 		if (event.keyCode === 13) {
 			sendMessage();
 		} else {
+			//attr is set to true if send button is disabled
+			//checks if send is disabled before enabling it
 			var attr = $('#inputButton').attr('disabled');
 			if (typeof attr !== 'undefined' && attr !== false) {
 				$('#inputButton').attr('disabled', false);
@@ -96,6 +103,8 @@ function sendWhisper(receiverNickname, messageText) {
 
 function sendMessage() {
 	const messageText = $('#inputWindow').val();
+
+	debugger;
 	const senderId = socket.id;
 	const tabText = $('.nav-link.active').text();
 
